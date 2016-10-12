@@ -1,16 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 
 export default class ImagePreview extends Component {
-  constructor(){
-    super()
-  }
-  
+
   render(){
     return (
         <div>
-
+          <img src={this.props.image} />
         </div>
     )
   }
+}
+
+
+ImagePreview.propTypes = {
+  image: PropTypes.string
 }

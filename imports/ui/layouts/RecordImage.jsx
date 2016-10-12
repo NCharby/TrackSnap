@@ -23,53 +23,59 @@ export default class RecordImage extends Component {
   constructor(){
     super();
     this.state = {
-      disableRecord: false
+      disableRecord: false,
+      currentImage: null
     };
   }
 
-  uploadFile(evt){
-    const files = evt.target.files;
-    console.log(files)
-    if(files.length > 0){
-      this.setState({disableRecord: true})
+  onActionClick(evt){
+    if(this.state.currentImage !== null){
+      this.saveImage();
+    } else {
+      this.requestCapture();
     }
   }
 
-  unloadFile(evt){
-    this.setState({disableRecord: false})
+  clearState() {
+    this.setState({currentImage: null, disableRecord: false})
   }
 
-  requestCapture(evt){
+  requestCapture(){
     const cameraOptions = {
       width: 800,
       height: 600
     }
-
     MeteorCamera.getPicture(cameraOptions, (err, data)=>{
-        TrackedItems.insert({
-          createdAt: new Date(),
-          image: data
-        })
+        this.setState({currentImage: data, disableRecord: true});
     })
   }
 
+  saveImage() {
+    TrackedItems.insert({
+      createdAt: new Date(),
+      image: this.state.currentImage
+    })
+    this.clearState()
+  }
+
   render(){
+
     return(
       <div style={parentStyle}>
-        <ImagePreview />
+
+        <ImagePreview image={this.state.currentImage} />
 
         <RaisedButton
-          label="Record"
+          label={(this.state.disableRecord)? 'Save': 'Record'}
           labelPosition="before"
           containerElement="label"
-          disabled={this.state.disableRecord}
-          onClick={this.requestCapture.bind(this)}
-          >
-        </RaisedButton>
+          onClick={this.onActionClick.bind(this)}
+          />
+
         <RaisedButton
           label="cancel"
           disabled={!this.state.disableRecord}
-          onClick={this.unloadFile.bind(this)}>
+          onClick={this.clearState.bind(this)}>
         </RaisedButton>
       </div>
     )
