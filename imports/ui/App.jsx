@@ -25,7 +25,9 @@ export default class App extends Component {
         <MuiThemeProvider>
           <RecordImage />
         </MuiThemeProvider>
-        <ItemList/>
+        <MuiThemeProvider>
+          <ItemList/>
+        </MuiThemeProvider>
       </div>
 
     )

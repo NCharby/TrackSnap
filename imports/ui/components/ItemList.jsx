@@ -1,8 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 
 import { TrackedItems } from '../../api/TrackedItems.js';
-import  ItemLi  from './ItemLi.jsx';
+import ItemLi from './ItemLi.jsx';
 import { createContainer } from 'meteor/react-meteor-data';
+
+import './ItemList.scss';
 
 class ItemList extends Component {
 
@@ -15,7 +17,7 @@ class ItemList extends Component {
   render(){
     return (
       <div>
-        <ul>
+        <ul className="itemList">
           {this.renderItems()}
         </ul>
       </div>
